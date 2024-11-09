@@ -7,6 +7,8 @@
     // Absolute path settings
     "baseUrl": ".",
     "paths": {
+      "*": ["src/*"],
+      "tests": ["__tests__/*"],
       "@components/*": ["src/components/*"],
       "@screens/*": ["src/screens/*"],
       "@assets/*": ["src/assets/*"],

@@ -12,6 +12,7 @@ module.exports = {
     'prettier', // enable Prettier to show formatting issues as ESLint errors
     'unused-imports', // listing for unused imports and variables
     'react-native', // additional RN rules
+    'import', // sort import
   ],
   settings: {
     'import/parsers': {
@@ -21,6 +22,10 @@ module.exports = {
       typescript: {
         alwaysTryTypes: true, // allow resolve types even if they’re not explicitly imported
         project: '<root>/tsconfig.json', // link to TS config
+      },
+      node: {
+        paths: ['src'],
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
       },
     },
   },
@@ -37,6 +42,7 @@ module.exports = {
         'no-unused-vars': 'off', // disable ESLint no-unused-vars rule to avoid conflicts
         'no-console': 'error', // disallow console logs for deploy (for dev change to 'warn')
         'unused-imports/no-unused-imports': 'error', // auto-removal for unused imports
+        'import/no-duplicates': 'error', // prevent duplicate imports and use 'import type' for types
         'unused-imports/no-unused-vars': [
           'warn',
           {
@@ -47,6 +53,38 @@ module.exports = {
           },
         ],
         'no-nested-ternary': 'error', // disallow nested ternary operators for readability
+        'import/extensions': [
+          'error',
+          'ignorePackages',
+          {
+            ts: 'never', // no extensions for TypeScript files
+            tsx: 'never', // no extensions for TypeScript (React) files
+            js: 'never', // no extensions for JS files
+            jsx: 'never', // no extensions for JSX files
+            json: 'always', // require extension for JSON files
+          },
+        ],
+        'import/order': [
+          // sort imports rules
+          'error',
+          {
+            groups: [
+              ['builtin', 'external'],
+              ['internal', 'parent', 'sibling', 'index'],
+              'type',
+            ],
+            pathGroups: [
+              {
+                pattern: '{react,react-native}',
+                group: 'external',
+                position: 'before', // React and RN must be always first
+              },
+            ],
+            pathGroupsExcludedImportTypes: ['react', 'react-native'],
+            'newlines-between': 'always',
+            alphabetize: { order: 'asc', caseInsensitive: true },
+          },
+        ],
       },
     },
   ],
