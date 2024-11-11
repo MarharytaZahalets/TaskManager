@@ -4,7 +4,7 @@ import { Pressable, View } from 'react-native';
 import { BaseText } from 'components';
 import styles from 'components/TaskCard/styles';
 import { APP_STATIC_ICONS, STATUS_ICONS } from 'core/constants/icons';
-import { dateString } from 'core/utils/dateToString';
+import { dateString } from 'core/utils/utils';
 
 import type { Task } from 'models/TaskList';
 

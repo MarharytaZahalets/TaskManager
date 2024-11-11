@@ -3,14 +3,16 @@ import { StyleSheet } from 'react-native';
 import { Colors } from 'core/theme/colors';
 
 const styles = StyleSheet.create({
-  bold: { fontWeight: 'bold' },
-  header: {
-    fontSize: 26,
+  container: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+    marginHorizontal: 20,
   },
   text: {
-    fontSize: 16,
+    color: Colors.primary,
+    fontSize: 22,
   },
-  textColor: { color: Colors.text },
 });
 
 export default styles;

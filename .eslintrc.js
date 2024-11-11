@@ -44,6 +44,7 @@ module.exports = {
         'unused-imports/no-unused-imports': 'error', // auto-removal for unused imports
         'import/no-duplicates': 'error', // prevent duplicate imports and use 'import type' for types
         'react-native/no-raw-text': 'off',
+        'react-native/split-platform-components': 'off',
         'unused-imports/no-unused-vars': [
           'warn',
           {
