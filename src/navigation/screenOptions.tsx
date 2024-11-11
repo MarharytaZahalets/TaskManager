@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { GeolocationIcon, SettingsIcon, TaskListIcon } from 'assets/icons/svg';
+import { TAB_ICON_SIZE } from 'core/constants/icons';
 import { Colors } from 'core/theme/colors';
 import { Path } from 'navigation/constants';
 
@@ -26,7 +27,7 @@ export const detailViewScreenOptions = ({
   typeof Path.DetailView
 >): NativeStackNavigationOptions => {
   return {
-    title: route.params?.title || 'Details',
+    title: route.params?.title || 'Add new task',
     headerBackButtonDisplayMode: 'minimal',
     headerTintColor: Colors.text,
   };
@@ -40,11 +41,17 @@ export const tabNavigatorOptions = ({
     const color: string = focused ? Colors.accent : Colors.neutral;
     switch (route.name) {
       case Path.TaskList:
-        return <TaskListIcon width={25} height={25} color={color} />;
+        return (
+          <TaskListIcon width={TAB_ICON_SIZE} height={TAB_ICON_SIZE} color={color} />
+        );
       case Path.Geolocation:
-        return <GeolocationIcon width={25} height={25} color={color} />;
+        return (
+          <GeolocationIcon width={TAB_ICON_SIZE} height={TAB_ICON_SIZE} color={color} />
+        );
       case Path.Settings:
-        return <SettingsIcon width={25} height={25} color={color} />;
+        return (
+          <SettingsIcon width={TAB_ICON_SIZE} height={TAB_ICON_SIZE} color={color} />
+        );
       default:
         return null;
     }

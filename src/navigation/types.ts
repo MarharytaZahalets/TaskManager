@@ -6,12 +6,13 @@ import type {
   NavigatorScreenParams,
 } from '@react-navigation/native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import type { Task } from 'models/TaskList';
 
 // *** Navigator Params ***
 export type RootStackParamList = {
   [Path.Home]: undefined;
   [Path.Tabs]: NavigatorScreenParams<TabParamList>;
-  [Path.DetailView]: { title?: string; itemId?: string } | undefined;
+  [Path.DetailView]: Task;
 };
 
 export type TabParamList = {

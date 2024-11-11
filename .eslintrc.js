@@ -31,7 +31,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['*.ts', '*.tsx'], // apply rules only for TS files
+      files: ['*.ts', '*.tsx', '*.js', '*.jsx'], // apply rules only for TS files
       rules: {
         '@typescript-eslint/no-shadow': ['error'], // prevent variable naming conflicts
         '@typescript-eslint/no-var-requires': 'off', // allow using require() in TS files
@@ -40,9 +40,10 @@ module.exports = {
         'prettier/prettier': ['error'], // flag Prettier issues as errors
         '@typescript-eslint/no-unused-vars': 'error', // flag unused variables as errors
         'no-unused-vars': 'off', // disable ESLint no-unused-vars rule to avoid conflicts
-        'no-console': 'error', // disallow console logs for deploy (for dev change to 'warn')
+        'no-console': 'warn', // disallow console logs for deploy (for dev change to 'warn')
         'unused-imports/no-unused-imports': 'error', // auto-removal for unused imports
         'import/no-duplicates': 'error', // prevent duplicate imports and use 'import type' for types
+        'react-native/no-raw-text': 'off',
         'unused-imports/no-unused-vars': [
           'warn',
           {

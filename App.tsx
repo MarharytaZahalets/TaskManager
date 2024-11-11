@@ -1,18 +1,15 @@
 import React from 'react';
 
-import AppNavigator from './src/navigation/AppNavigator';
-//import { useColorScheme } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-//import { Colors } from 'react-native/Libraries/NewAppScreen';
+import AppNavigator from './src/navigation/AppNavigator';
 
 const App: React.FC = () => {
-  //const isDarkMode = useColorScheme() === 'dark';
-
-  // const backgroundStyle = {
-  //   backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  // };
-
-  return <AppNavigator />;
+  return (
+    <SafeAreaProvider>
+      <AppNavigator />
+    </SafeAreaProvider>
+  );
 };
 
 export default App;
