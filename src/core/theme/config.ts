@@ -17,3 +17,7 @@ export const Theme = {
     labelOngoing: Colors.labelOngoing,
   },
 };
+
+export const inheritTextColor = {
+  color: Colors.text,
+};
