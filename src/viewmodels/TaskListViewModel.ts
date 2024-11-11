@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Alert } from 'react-native';
 
+import { SheetManager } from 'react-native-actions-sheet';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 import api from 'api/taskListService';
 import { TASK_FIELDS } from 'core/constants/ui';
-import { dateString } from 'core/utils/dateToString';
+import { dateString, errorHandler } from 'core/utils/utils';
 import { Task, type TaskField } from 'models/TaskList';
 import { RootState } from 'state/store';
 import {
@@ -25,15 +25,6 @@ export const useTaskViewModel = () => {
 
   const dispatch = useDispatch();
 
-  const errorHandler = (err: unknown) => {
-    if (err instanceof Error) {
-      setError(err.message);
-    } else {
-      setError('An unknown error occurred');
-    }
-  };
-
-  // Fetch tasks on mount
   useEffect(() => {
     fetchTaskList();
   }, []);
@@ -45,7 +36,7 @@ export const useTaskViewModel = () => {
       __DEV__ && console.log('DATA: ', data);
       dispatch(setTaskListAction(data));
     } catch (err: unknown) {
-      errorHandler(err);
+      setError(errorHandler(err));
     } finally {
       setLoading(false);
     }
@@ -58,7 +49,7 @@ export const useTaskViewModel = () => {
         const newTask = await api.createTask(task);
         dispatch(addTaskAction(newTask));
       } catch (err: unknown) {
-        errorHandler(err);
+        setError(errorHandler(err));
       } finally {
         setLoading(false);
       }
@@ -73,7 +64,7 @@ export const useTaskViewModel = () => {
         const updatedTask = await api.updateTask(id, task);
         dispatch(updateTaskAction(updatedTask));
       } catch (err: unknown) {
-        errorHandler(err);
+        setError(errorHandler(err));
       } finally {
         setLoading(false);
       }
@@ -88,7 +79,7 @@ export const useTaskViewModel = () => {
         await api.deleteTask(id);
         dispatch(deleteTaskAction(id));
       } catch (err: unknown) {
-        errorHandler(err);
+        setError(errorHandler(err));
       } finally {
         setLoading(false);
       }
@@ -103,9 +94,10 @@ export const useTaskViewModel = () => {
         const data = await api.sortTasks(field, 'asc');
         dispatch(setTaskListAction(data));
       } catch (err: unknown) {
-        errorHandler(err);
+        setError(errorHandler(err));
       } finally {
         setLoading(false);
+        SheetManager.hide('app-action-sheet');
       }
     },
     [dispatch],
@@ -132,24 +124,21 @@ export const useTaskViewModel = () => {
     [dispatch, taskList],
   );
 
-  const showSortAlert = () => {
-    Alert.alert(
-      'Select sort field',
-      '',
-      [
-        { text: TASK_FIELDS.title, onPress: () => sortTaskList('title') },
-        {
-          text: TASK_FIELDS.description,
-          onPress: () => sortTaskList('description'),
-        },
-        { text: TASK_FIELDS.status, onPress: () => sortTaskList('status') },
-        {
-          text: TASK_FIELDS.createdAt,
-          onPress: () => sortTaskList('createdAt'),
-        },
-      ],
-      { cancelable: true },
-    );
+  const sortActionList = () => {
+    SheetManager.show('app-action-sheet', {
+      payload: {
+        title: 'Select sort option',
+        items: [
+          { id: '1', field: TASK_FIELDS.title, onPress: () => sortTaskList('title') },
+          {
+            id: '2',
+            field: TASK_FIELDS.description,
+            onPress: () => sortTaskList('description'),
+          },
+          { id: '3', field: TASK_FIELDS.status, onPress: () => sortTaskList('status') },
+        ],
+      },
+    });
   };
 
   return {
@@ -161,6 +150,6 @@ export const useTaskViewModel = () => {
     updateTask,
     deleteTask,
     searchTaskList,
-    showSortAlert,
+    sortActionList,
   };
 };

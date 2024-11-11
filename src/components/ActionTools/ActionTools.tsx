@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { TextInput, View } from 'react-native';
 
-import { BaseButton } from 'components';
+import { ActionButton } from 'components';
 import styles from 'components/ActionTools/styles';
 import { APP_STATIC_ICONS } from 'core/constants/icons';
 
@@ -33,19 +33,18 @@ const ActionTools: React.FC<ActionToolsProps> = React.memo(
             onChangeText={setQuery}
             style={styles.input}
             placeholder={'Search'}
-            autoCapitalize={'none'}
             autoCorrect={false}
             inputMode={'search'}
             onSubmitEditing={onSearch}
           />
-          <BaseButton onPress={onSearch}>{APP_STATIC_ICONS.search}</BaseButton>
+          <ActionButton onPress={onSearch}>{APP_STATIC_ICONS.search}</ActionButton>
         </View>
-        <BaseButton style={styles.actionIconButton} onPress={onSortTaskList}>
+        <ActionButton style={styles.actionIconButton} onPress={onSortTaskList}>
           {APP_STATIC_ICONS.filter}
-        </BaseButton>
-        <BaseButton style={styles.actionIconButton} onPress={onAddTask}>
+        </ActionButton>
+        <ActionButton style={styles.actionIconButton} onPress={onAddTask}>
           {APP_STATIC_ICONS.circlePlus}
-        </BaseButton>
+        </ActionButton>
       </View>
     );
   },

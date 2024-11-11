@@ -1,9 +1,17 @@
-import { Platform } from 'react-native';
+import { isAndroid } from 'core/utils/utils';
 
-const BASE_URL =
-  Platform.OS === 'android' ? 'http://10.0.2.2:3000' : 'http://localhost:3000';
+const BASE_URL = isAndroid() ? 'http://10.0.2.2:3000' : 'http://localhost:3000';
 
-const apiCall = async <T>(method: string, url: string, data?: object): Promise<T> => {
+interface ApiResponse {
+  data: Record<string, unknown> | null;
+  error: string | null;
+}
+
+const apiCall = async (
+  method: string,
+  url: string,
+  data?: object,
+): Promise<ApiResponse> => {
   const headers = {
     'Content-Type': 'application/json',
   };
@@ -22,20 +30,28 @@ const apiCall = async <T>(method: string, url: string, data?: object): Promise<T
 
     if (!response.ok) {
       const error = await response.text();
-      throw new Error(`Error ${response.status}: ${error}`);
+      __DEV__ && console.error(error);
+      return {
+        data: null,
+        error: error,
+      };
     }
     return await response.json();
   } catch (error) {
-    throw error;
+    __DEV__ && console.error(error);
+    return {
+      data: null,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    };
   }
 };
 
-export const get = <T>(url: string): Promise<T> => apiCall('GET', url);
-export const post = <T>(url: string, data: object): Promise<T> =>
+export const get = (url: string): Promise<ApiResponse> => apiCall('GET', url);
+export const post = (url: string, data: object): Promise<ApiResponse> =>
   apiCall('POST', url, data);
-export const put = <T>(url: string, data: object): Promise<T> =>
+export const put = (url: string, data: object): Promise<ApiResponse> =>
   apiCall('PUT', url, data);
-export const remove = <T>(url: string): Promise<T> => apiCall('DELETE', url);
+export const remove = (url: string): Promise<ApiResponse> => apiCall('DELETE', url);
 
 export default {
   get,

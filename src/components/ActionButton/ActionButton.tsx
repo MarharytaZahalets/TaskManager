@@ -1,9 +1,9 @@
 import React from 'react';
 import { Pressable, View } from 'react-native';
 
-import styles from 'components/BaseButton/styles';
+import styles from 'components/ActionButton/styles';
 
-interface BaseButtonProps {
+interface ActionButtonProps {
   children: React.ReactNode;
   onPress: () => void;
   style?: object;
@@ -12,7 +12,7 @@ interface BaseButtonProps {
   fullScreenWidth?: boolean;
 }
 
-const BaseButton: React.FC<BaseButtonProps> = ({
+const ActionButton: React.FC<ActionButtonProps> = ({
   onPress,
   style,
   containerStyle,
@@ -50,4 +50,4 @@ const BaseButton: React.FC<BaseButtonProps> = ({
   );
 };
 
-export default BaseButton;
+export default ActionButton;

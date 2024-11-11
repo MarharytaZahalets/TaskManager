@@ -4,6 +4,7 @@ import { GeolocationIcon, SettingsIcon, TaskListIcon } from 'assets/icons/svg';
 import { TAB_ICON_SIZE } from 'core/constants/icons';
 import { Colors } from 'core/theme/colors';
 import { Path } from 'navigation/constants';
+import styles from 'navigation/styles';
 
 import type {
   BottomTabNavigationOptions,
@@ -30,6 +31,7 @@ export const detailViewScreenOptions = ({
     title: route.params?.title || 'Add new task',
     headerBackButtonDisplayMode: 'minimal',
     headerTintColor: Colors.text,
+    headerTitleStyle: styles.header,
   };
 };
 
@@ -63,6 +65,7 @@ export const tabNavigatorOptions = ({
     tabBarHideOnKeyboard: true,
     headerBackButtonDisplayMode: 'minimal',
     animation: 'fade',
+    headerTitleStyle: styles.header,
   };
 };
 

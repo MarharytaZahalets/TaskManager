@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
   actionButtonText: { color: Colors.textLight },
   actionButtonsContainer: {
     flexDirection: 'row',
-    paddingTop: 20,
+    paddingVertical: 20,
   },
   container: {},
   deleteButton: { backgroundColor: Colors.labelCancel, flex: 2 },
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   },
   statusButtonContent: { alignItems: 'flex-start' },
   title: {
-    fontSize: 20,
+    fontSize: 18,
     marginBottom: 10,
     marginTop: 20,
   },

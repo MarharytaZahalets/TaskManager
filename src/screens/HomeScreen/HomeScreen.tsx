@@ -1,7 +1,7 @@
 import React from 'react';
 
 import styles from './styles';
-import { AppSaveAreaView, BaseText, BaseButton } from 'components';
+import { AppSaveAreaView, BaseText, ActionButton } from 'components';
 import { APP_STATIC_ICONS } from 'core/constants/icons';
 import { Path } from 'navigation/constants';
 import { useTaskViewModel } from 'viewmodels/TaskListViewModel';
@@ -48,9 +48,9 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
         Tap on arrow to bring more magic into your life✨
       </BaseText>
 
-      <BaseButton onPress={goToTabs} containerStyle={styles.buttonContainer}>
+      <ActionButton onPress={goToTabs} containerStyle={styles.buttonContainer}>
         {APP_STATIC_ICONS.arrow}
-      </BaseButton>
+      </ActionButton>
     </AppSaveAreaView>
   );
 };

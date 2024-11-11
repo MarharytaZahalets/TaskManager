@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
   date: { marginLeft: 8 },
   description: { paddingVertical: 16 },
   row: { flexDirection: 'row' },
-  title: { flexShrink: 1, fontSize: 20, marginLeft: 12 },
+  title: { flexShrink: 1, fontSize: 18, marginLeft: 12 },
 });
 
 export default styles;
