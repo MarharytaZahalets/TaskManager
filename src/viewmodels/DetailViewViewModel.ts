@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { SheetManager } from 'react-native-actions-sheet';
 
@@ -7,7 +7,7 @@ import { generateId, hasChanges } from 'core/utils/utils';
 import { useTaskViewModel } from 'viewmodels/TaskListViewModel';
 
 import type { NavigationProp, RouteProp } from '@react-navigation/native';
-import type { TaskStatus } from 'models/TaskList';
+import type { Task, TaskStatus } from 'models/TaskList';
 import type { RootStackParamList } from 'navigation/types';
 
 export const useDetailViewModel = (
@@ -31,30 +31,35 @@ export const useDetailViewModel = (
 
   const { addTask, deleteTask, updateTask } = useTaskViewModel();
 
-  const showStatusAlert = () => {
+  const setStatusAndClose = useCallback((task: Task) => {
+    setUpdatedTask(task);
+    SheetManager.hide('app-action-sheet');
+  }, []);
+
+  const openChangeStatus = () => {
     SheetManager.show('app-action-sheet', {
       payload: {
-        title: 'Change task status',
+        title: 'Choose status',
         items: [
           {
             id: '1',
             field: TASK_STATUS_FIELDS.ongoing,
-            onPress: () => setUpdatedTask({ ...updatedTask, status: 'ongoing' }),
+            onPress: () => setStatusAndClose({ ...updatedTask, status: 'ongoing' }),
           },
           {
             id: '2',
             field: TASK_STATUS_FIELDS.inProcess,
-            onPress: () => setUpdatedTask({ ...updatedTask, status: 'inProcess' }),
+            onPress: () => setStatusAndClose({ ...updatedTask, status: 'inProcess' }),
           },
           {
             id: '3',
             field: TASK_STATUS_FIELDS.done,
-            onPress: () => setUpdatedTask({ ...updatedTask, status: 'done' }),
+            onPress: () => setStatusAndClose({ ...updatedTask, status: 'done' }),
           },
           {
-            id: '3',
+            id: '4',
             field: TASK_STATUS_FIELDS.canceled,
-            onPress: () => setUpdatedTask({ ...updatedTask, status: 'canceled' }),
+            onPress: () => setStatusAndClose({ ...updatedTask, status: 'canceled' }),
           },
         ],
       },
@@ -70,7 +75,7 @@ export const useDetailViewModel = (
   };
 
   const onSave = () => {
-    if (!title) {
+    if (!id) {
       addTask({
         ...updatedTask,
         id: generateId(),
@@ -97,7 +102,7 @@ export const useDetailViewModel = (
     updatedTask,
     setTitle,
     setDescription,
-    showStatusAlert,
+    openChangeStatus,
     onSave,
     onDelete,
   };

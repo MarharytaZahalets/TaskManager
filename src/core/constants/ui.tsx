@@ -11,7 +11,7 @@ export const TASK_FIELDS: Record<TaskFields, string> = {
 
 export const TASK_STATUS_FIELDS: Record<TaskStatus, string> = {
   ongoing: 'Ongoing',
-  inProcess: 'In Process',
+  inProcess: 'In process',
   canceled: 'Cancel',
   done: 'Done',
 };

@@ -6,8 +6,13 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     paddingVertical: 20,
   },
+  header: {
+    fontSize: 20,
+    marginVertical: 16,
+    textAlign: 'center',
+  },
   item: {
-    alignItems: 'flex-start',
+    //alignItems: 'flex-start',
     justifyContent: 'flex-start',
     paddingHorizontal: 0,
   },
