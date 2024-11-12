@@ -27,9 +27,26 @@ This is a Task Manager project, bootstrapped using [`@react-native-community/cli
 
 > **Note**: Ensure you've completed the [React Native 0.75 - Environment Setup](https://reactnative.dev/docs/0.75/set-up-your-environment) instructions up until the "Creating a new application" step before proceeding.
 
-## Step 1: Start the Metro Server
+## Step 1: Install modules and pods
 
-First, start **Metro**, the JavaScript bundler that ships with React Native.
+First, you need to install all dependencies. 
+
+Run the following commands in the root of the project to install node_modules:
+```bash
+npm install
+```
+For pods installation run:
+```bash
+npx pod-install
+```
+or
+```bash
+cd ios && pod install && cd ..
+```
+
+## Step 2: Start the Metro Server
+
+Second, start **Metro**, the JavaScript bundler that ships with React Native.
 
 To start Metro, run one of the following commands from the root of the Task Manager project:
 
@@ -44,7 +61,7 @@ you run the command above). If you don’t want to use the debugger, just contin
 ```bash
 npx react-native start --experimental-debugger
 ```
-## Step 2: Start the JSON Server
+## Step 3: Start the JSON Server
 
 Let _Metro Bundler_ run in its own terminal. Open a new terminal from the _root_ of your React Native project and run the following command to start json-server:
 ```bash
@@ -69,7 +86,7 @@ http://localhost:3000/taskList
 ```
 Now, we can start the application.
 
-## Step 2: Start the Task Manager
+## Step 4: Start the Task Manager
 
 >**Note**:  This application uses json-server, so to enable the main functionality (task management), please run this application on an **iPhone/iPad Simulator** or **Android Emulator**. It may not work correctly on real devices.
 
