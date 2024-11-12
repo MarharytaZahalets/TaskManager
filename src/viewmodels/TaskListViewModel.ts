@@ -33,7 +33,7 @@ export const useTaskViewModel = () => {
     setLoading(true);
     try {
       const data = await api.getTasks();
-      __DEV__ && console.log('DATA: ', data);
+      __DEV__ && console.log('fetchTaskList: ', data);
       dispatch(setTaskListAction(data));
     } catch (err: unknown) {
       setError(errorHandler(err));
@@ -97,7 +97,6 @@ export const useTaskViewModel = () => {
         setError(errorHandler(err));
       } finally {
         setLoading(false);
-        SheetManager.hide('app-action-sheet');
       }
     },
     [dispatch],
@@ -124,18 +123,23 @@ export const useTaskViewModel = () => {
     [dispatch, taskList],
   );
 
+  const sortAndClose = useCallback((field: TaskField) => {
+    sortTaskList(field);
+    SheetManager.hide('app-action-sheet');
+  }, []);
+
   const sortActionList = () => {
     SheetManager.show('app-action-sheet', {
       payload: {
-        title: 'Select sort option',
+        title: 'Choose sort field',
         items: [
-          { id: '1', field: TASK_FIELDS.title, onPress: () => sortTaskList('title') },
+          { id: '1', field: TASK_FIELDS.title, onPress: () => sortAndClose('title') },
           {
             id: '2',
             field: TASK_FIELDS.description,
-            onPress: () => sortTaskList('description'),
+            onPress: () => sortAndClose('description'),
           },
-          { id: '3', field: TASK_FIELDS.status, onPress: () => sortTaskList('status') },
+          { id: '3', field: TASK_FIELDS.status, onPress: () => sortAndClose('status') },
         ],
       },
     });

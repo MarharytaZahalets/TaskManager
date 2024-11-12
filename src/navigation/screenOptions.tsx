@@ -28,7 +28,7 @@ export const detailViewScreenOptions = ({
   typeof Path.DetailView
 >): NativeStackNavigationOptions => {
   return {
-    title: route.params?.title || 'Add new task',
+    title: route.params?.title || 'Task',
     headerBackButtonDisplayMode: 'minimal',
     headerTintColor: Colors.text,
     headerTitleStyle: styles.header,

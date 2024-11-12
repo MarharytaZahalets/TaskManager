@@ -1,17 +1,20 @@
 import { isAndroid } from 'core/utils/utils';
 
+import type { Task } from 'models/TaskList';
+
 const BASE_URL = isAndroid() ? 'http://10.0.2.2:3000' : 'http://localhost:3000';
 
-interface ApiResponse {
-  data: Record<string, unknown> | null;
-  error: string | null;
-}
+type ApiCallType = {
+  (method: 'GET', url: string): Promise<Task[]>;
+  (method: 'POST' | 'PUT', url: string, data: Task): Promise<Task>;
+  (method: 'DELETE', url: string): Promise<Task>;
+};
 
-const apiCall = async (
-  method: string,
+const apiCall: ApiCallType = async (
+  method: 'GET' | 'DELETE' | 'POST' | 'PUT',
   url: string,
-  data?: object,
-): Promise<ApiResponse> => {
+  data?: Task,
+) => {
   const headers = {
     'Content-Type': 'application/json',
   };
@@ -21,8 +24,8 @@ const apiCall = async (
     headers,
   };
 
-  if (data) {
-    options.body = JSON.stringify(data); // for POST/PUT requests
+  if (data && (method === 'POST' || method === 'PUT')) {
+    options.body = JSON.stringify(data);
   }
 
   try {
@@ -31,27 +34,21 @@ const apiCall = async (
     if (!response.ok) {
       const error = await response.text();
       __DEV__ && console.error(error);
-      return {
-        data: null,
-        error: error,
-      };
+      return method === 'GET' ? [] : ({} as Task);
     }
+
     return await response.json();
   } catch (error) {
     __DEV__ && console.error(error);
-    return {
-      data: null,
-      error: error instanceof Error ? error.message : 'Unknown error',
-    };
+    return method === 'GET' ? [] : ({} as Task);
   }
 };
 
-export const get = (url: string): Promise<ApiResponse> => apiCall('GET', url);
-export const post = (url: string, data: object): Promise<ApiResponse> =>
+export const get = (url: string): Promise<Task[]> => apiCall('GET', url);
+export const post = (url: string, data: Task): Promise<Task> =>
   apiCall('POST', url, data);
-export const put = (url: string, data: object): Promise<ApiResponse> =>
-  apiCall('PUT', url, data);
-export const remove = (url: string): Promise<ApiResponse> => apiCall('DELETE', url);
+export const put = (url: string, data: Task): Promise<Task> => apiCall('PUT', url, data);
+export const remove = (url: string): Promise<Task> => apiCall('DELETE', url);
 
 export default {
   get,

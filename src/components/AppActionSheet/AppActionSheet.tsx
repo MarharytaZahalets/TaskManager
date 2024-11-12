@@ -16,7 +16,9 @@ const AppActionSheet: React.FC<SheetProps<'app-action-sheet'>> = ({ payload }) =
   return (
     <ActionSheet>
       <View style={styles.container}>
-        <BaseText isHeader>{payload?.title}</BaseText>
+        <BaseText style={styles.header} isBold>
+          {payload?.title}
+        </BaseText>
         {payload?.items.length &&
           payload?.items.map((item) => (
             <ActionButton

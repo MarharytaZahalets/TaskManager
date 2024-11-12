@@ -10,7 +10,7 @@ import { useDetailViewModel } from 'viewmodels/DetailViewViewModel';
 import type { DetailViewScreenProps } from 'navigation/types';
 
 const DetailViewScreen: React.FC<DetailViewScreenProps> = ({ navigation, route }) => {
-  const { updatedTask, setTitle, setDescription, showStatusAlert, onSave, onDelete } =
+  const { updatedTask, setTitle, setDescription, openChangeStatus, onSave, onDelete } =
     useDetailViewModel(route, navigation);
 
   return (
@@ -29,13 +29,13 @@ const DetailViewScreen: React.FC<DetailViewScreenProps> = ({ navigation, route }
           onChangeText={(value) => setDescription(value)}
         />
         <BaseText style={styles.title} isBold>
-          Change status:
+          Status:
         </BaseText>
         <ActionButton
           style={styles.statusButton}
           contentStyle={styles.statusButtonContent}
           fullScreenWidth
-          onPress={showStatusAlert}
+          onPress={openChangeStatus}
         >
           <BaseText isBold>{TASK_STATUS_FIELDS[updatedTask.status]}</BaseText>
         </ActionButton>
