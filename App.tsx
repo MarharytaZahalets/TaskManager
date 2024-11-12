@@ -1,20 +1,38 @@
+/**
+ * Sample React Native App
+ * https://github.com/facebook/react-native
+ *
+ * @format
+ */
+
 import React from 'react';
+import { SafeAreaView, ScrollView, StatusBar, useColorScheme, View } from 'react-native';
 
-import { SheetProvider } from 'react-native-actions-sheet';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { Colors, Header } from 'react-native/Libraries/NewAppScreen';
 
-import AppNavigator from './src/navigation/AppNavigator';
+function App(): React.JSX.Element {
+  const isDarkMode = useColorScheme() === 'dark';
 
-import './sheets';
+  const backgroundStyle = {
+    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  };
 
-const App: React.FC = () => {
   return (
-    <SafeAreaProvider>
-      <SheetProvider>
-        <AppNavigator />
-      </SheetProvider>
-    </SafeAreaProvider>
+    <SafeAreaView style={backgroundStyle}>
+      <StatusBar
+        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+        backgroundColor={backgroundStyle.backgroundColor}
+      />
+      <ScrollView contentInsetAdjustmentBehavior='automatic' style={backgroundStyle}>
+        <Header />
+        <View
+          style={{
+            backgroundColor: isDarkMode ? Colors.black : Colors.white,
+          }}
+        ></View>
+      </ScrollView>
+    </SafeAreaView>
   );
-};
+}
 
 export default App;
