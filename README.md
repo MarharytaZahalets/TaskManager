@@ -15,8 +15,6 @@ This is a Task Manager project, bootstrapped using [`@react-native-community/cli
 
 # Welcome to Task Manager App repository 🚀
 
-## This RN-CLI
-
 ![gif](./docs/app.gif)
 
 ### Full app screen recording:
