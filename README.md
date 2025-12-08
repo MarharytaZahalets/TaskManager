@@ -1,6 +1,23 @@
+## 🚀 New Version Available (Expo + New Architecture)
+
+This project has been fully migrated to **Expo with the New React Native Architecture enabled**.
+
+The new version includes:
+- Expo Router (file-based navigation)
+- Zustand for state management
+- Supabase as a backend
+- Reanimated + Gesture Handler for animated modals
+- Updated permissions and location handling
+
+👉 The new repository with the latest implementation is available here:
+[[Task Tracker App](https://github.com/MarharytaZahalets/TaskTracker)]
+
+
 This is a Task Manager project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
 # Welcome to Task Manager App repository 🚀
+
+## This RN-CLI
 
 ![gif](./docs/app.gif)
 
