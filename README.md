@@ -1,4 +1,4 @@
-## 🚀 New Version Available (Expo + New Architecture)
+## 👉 New Version Available (Expo + New Architecture) here: [Task Tracker App](https://github.com/MarharytaZahalets/TaskTracker)
 
 This project has been fully migrated to **Expo with the New React Native Architecture enabled**.
 
@@ -9,8 +9,7 @@ The new version includes:
 - Reanimated + Gesture Handler for animated modals
 - Updated permissions and location handling
 
-### 👉 The new repository with the latest implementation is available here: [Task Tracker App](https://github.com/MarharytaZahalets/TaskTracker)
-
+---
 
 This is a Task Manager project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
