@@ -10,10 +10,10 @@ import {
   LongArrowRightIcon,
   OngoingIcon,
   SearchIcon,
-} from 'assets/icons/svg';
-import { Colors } from 'core/theme/colors';
+} from '../../assets/icons/svg';
+import { Colors } from '../theme/colors';
 
-import type { TaskStatus } from 'models/TaskList';
+import type { TaskStatus } from '../../models/TaskList';
 export type IconType = 'arrow' | 'calendar' | 'circlePlus' | 'filter' | 'search';
 
 export const TAB_ICON_SIZE: number = 28;

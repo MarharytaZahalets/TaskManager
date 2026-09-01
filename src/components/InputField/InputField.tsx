@@ -1,10 +1,8 @@
 import React from 'react';
-import { TextInput, View } from 'react-native';
+import { TextInput, TextInputProps, View } from 'react-native';
 
-import { BaseText } from 'components';
-import styles from 'components/InputField/styles';
-
-import type { TextInputProps } from 'react-native/Libraries/Components/TextInput/TextInput';
+import { BaseText } from '..';
+import styles from './styles';
 
 interface InputFieldProps extends Omit<TextInputProps, 'onChangeText'> {
   fieldName: string;

@@ -1,32 +1,14 @@
 {
-  "extends": "@react-native/typescript-config/tsconfig.json",
+  "extends": "@react-native/typescript-config",
   "compilerOptions": {
     "noUnusedLocals": true,
-    "noUnusedParameters": true,
-
-    // Absolute path settings
-    "baseUrl": ".",
-    "paths": {
-      "*": ["src/*"],
-      "tests": ["__tests__/*"],
-      "@components/*": ["src/components/*"],
-      "@screens/*": ["src/screens/*"],
-      "@assets/*": ["src/assets/*"],
-      "@utils/*": ["src/core/utils/*"],
-      "@hooks/*": ["src/core/hooks/*"],
-      "@state/*": ["src/state/*"],
-      "@models/*": ["src/models/*"],
-      "@viewmodels/*": ["src/viewmodels/*"],
-      "@api/*": ["src/api/*"]
-    }
+    "noUnusedParameters": true
   },
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
     "index.js",
-    "App.js"
-  ],
-  "typeRoots": [
-    "./src/core/types"
+    "App.tsx",
+    "sheets.ts"
   ]
 }

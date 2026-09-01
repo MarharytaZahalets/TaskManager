@@ -2,7 +2,7 @@ import { registerSheet, type SheetDefinition } from 'react-native-actions-sheet'
 
 import AppActionSheet, {
   type renderItemProps,
-} from 'components/AppActionSheet/AppActionSheet';
+} from './src/components/AppActionSheet/AppActionSheet';
 
 registerSheet('app-action-sheet', AppActionSheet);
 

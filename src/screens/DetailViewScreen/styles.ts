@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { Colors } from 'core/theme/colors';
+import { Colors } from '../../core/theme/colors';
 
 const styles = StyleSheet.create({
   actionButtonIndent: { flex: 0.2 },

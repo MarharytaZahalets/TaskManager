@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { ActionButton, BaseText } from 'components';
-import styles from 'components/SettingActionButton/styles';
+import { ActionButton, BaseText } from '..';
+import styles from './styles';
 
 interface TaskCardProps {
   title: string;

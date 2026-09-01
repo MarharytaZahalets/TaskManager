@@ -1,4 +1,4 @@
-import { Path } from 'navigation/constants';
+import { Path } from './constants';
 
 import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import type {
@@ -6,7 +6,7 @@ import type {
   NavigatorScreenParams,
 } from '@react-navigation/native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import type { Task } from 'models/TaskList';
+import type { Task } from '../models/TaskList';
 
 // *** Navigator Params ***
 export type RootStackParamList = {

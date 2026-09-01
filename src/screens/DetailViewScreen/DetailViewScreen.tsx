@@ -2,12 +2,12 @@
 import React from 'react';
 import { ScrollView, View } from 'react-native';
 
-import { ActionButton, AppSaveAreaView, BaseText, InputField } from 'components';
-import { TASK_FIELDS, TASK_STATUS_FIELDS } from 'core/constants/ui';
-import styles from 'screens/DetailViewScreen/styles';
-import { useDetailViewModel } from 'viewmodels/DetailViewViewModel';
+import { ActionButton, AppSaveAreaView, BaseText, InputField } from '../../components';
+import { TASK_FIELDS, TASK_STATUS_FIELDS } from '../../core/constants/ui';
+import styles from './styles';
+import { useDetailViewModel } from '../../viewmodels/DetailViewViewModel';
 
-import type { DetailViewScreenProps } from 'navigation/types';
+import type { DetailViewScreenProps } from '../../navigation/types';
 
 const DetailViewScreen: React.FC<DetailViewScreenProps> = ({ navigation, route }) => {
   const { updatedTask, setTitle, setDescription, openChangeStatus, onSave, onDelete } =

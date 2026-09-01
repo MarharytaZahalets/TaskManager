@@ -1,5 +1,5 @@
-import apiClient from 'api/apiClient';
-import { Task } from 'models/TaskList';
+import apiClient from './apiClient';
+import { Task } from '../models/TaskList';
 
 export const getTasks = async (): Promise<Task[]> => await apiClient.get('/taskList');
 

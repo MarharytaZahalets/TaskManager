@@ -1,4 +1,4 @@
-import type { TaskStatus } from 'models/TaskList';
+import type { TaskStatus } from '../../models/TaskList';
 
 type TaskFields = 'title' | 'description' | 'status' | 'createdAt';
 
