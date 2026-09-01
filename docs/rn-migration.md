@@ -5,8 +5,8 @@ Agent sessions: read this file first. Do not re-investigate completed steps. Do 
 ## Migration
 
 - Starting version: React Native **0.75.4** (React **18.3.1**, New Architecture off)
-- Target version: React Native **0.87.1** (React **19.2.3**, New Architecture on for iOS via current RN default / pods)
-- Current status: **iOS Debug compile + `tsc --noEmit` succeeded.** Jest has leftover test issues (not aliases). Android not started.
+- Target version: React Native **0.87.1** (React **19.2.3**, New Architecture on)
+- Current status: **iOS Debug compile, Android Debug `assembleDebug`, and `tsc --noEmit` succeeded.** Jest has leftover test issues (not aliases).
 
 ### Completed steps
 
@@ -21,17 +21,16 @@ Agent sessions: read this file first. Do not re-investigate completed steps. Do 
 9. TS 6: dropped `baseUrl` / catch-all / unused `@` aliases.
 10. **Option A — no aliases:** relative imports; no `paths` / module-resolver.
 11. ESLint: replace custom stack with `extends: '@react-native/eslint-config'`. Drop import/unused-imports/prettier-eslint/`plugin:react-native/all`. Prettier stays CLI-only. Direct plugin deps are npm’s requirement so ESLint can resolve the shareable config (not extra product tooling).
+12. Android toolchain aligned to RN 0.87.1 (Gradle 9.4.1, SDK/NDK/Kotlin catalog, `newArchEnabled=true`, AGP 9 ProGuard + template Kotlin opt-outs, `MainApplication` 0.87 bootstrap). `./gradlew assembleDebug` **BUILD SUCCESSFUL**. AsyncStorage not upgraded.
 
 ### Current step / blocker
 
-- **Current:** `tsc --noEmit` green. `eslint .` loads RN config; remaining lint errors are app/test (`apiClient.test.ts` parse, `react-hooks/exhaustive-deps`). Jest still has leftover test issues.
-- Next: Android or geo/maps UI leftover cleanup.
+- **Current:** iOS Debug and Android Debug assemble green. `tsc --noEmit` green. `eslint .` loads RN config; remaining lint errors are app/test (`apiClient.test.ts` parse, `react-hooks/exhaustive-deps`). Jest still has leftover test issues.
+- Next: product cleanup (maps / geolocation UI leftover) or Jest test fixes.
 
 ### Remaining steps
 
-1. Android: compileSdk 37 / AGP 9 / Gradle 9.x, Kotlin `MainApplication` for 0.87, `newArchEnabled=true`.
-2. New Architecture verification as its own step.
-3. Product cleanup: maps / geolocation screens and Info.plist; Jest test fixes.
+1. Product cleanup: maps / geolocation screens and Info.plist; Jest test fixes.
 
 ## Project state (migration-relevant)
 
@@ -45,7 +44,10 @@ Agent sessions: read this file first. Do not re-investigate completed steps. Do 
 | CocoaPods | Gemfile-constrained (resolved ~1.15.2 because `xcodeproj < 1.26`) |
 | `.xcode.env` | versioned `NODE_BINARY=$(command -v node)` — do not put machine paths here |
 | `.xcode.env.local` | gitignored; `NODE_BINARY` for this Mac |
-| Android `newArchEnabled` | `false` (not migrated yet) |
+| Android `newArchEnabled` | `true` |
+| Android Gradle | 9.4.1 (wrapper) |
+| Android SDK / NDK / Kotlin | minSdk 24, compileSdk 37, targetSdk 36, buildTools 37.0.0, NDK 27.1.12297006, Kotlin 2.2.0 |
+| AGP | 9.2.1 via React Native Gradle plugin |
 | Experimental SwiftPM | off; keep CocoaPods |
 
 Installed native UI (npm / pods):
@@ -76,6 +78,14 @@ Installed native UI (npm / pods):
 | Option A: relative imports only | Small tree; RN default-style tsconfig | Required (agreed) | `tsc --noEmit` exit 0 |
 | ESLint = `@react-native/eslint-config` | Replace custom import/prettier-plugin/`all` stack | Required (agreed) | `eslint .` loads; leftover errors are app code |
 | Do not enable experimental SwiftPM | Keep CocoaPods | Required (locked) | Pods still used |
+| Android Gradle 9.4.1 | AGP 9.2.1 (RN 0.87.1) requires Gradle ≥ 9.4.1 | Required | `assembleDebug` succeeded |
+| Android SDK/NDK/Kotlin catalog | Match `react-native/gradle/libs.versions.toml` + 0.87 template | Required | `assembleDebug` succeeded |
+| `newArchEnabled=true` | RN 0.87 does not support disabling New Architecture | Required | Android Debug assemble; iOS already New Arch |
+| `proguard-android-optimize.txt` | AGP 9 dropped `proguard-android.txt` | Required | Aligns with 0.87 app template |
+| `MainApplication` `loadReactNative` | RN 0.87 host bootstrap (replace 0.75 SoLoader + gated `load()`) | Required | `assembleDebug` succeeded |
+| Keep `MainActivity.onCreate(null)` | `react-native-screens` | Required (kept) | Not rewritten |
+| `android.builtInKotlin=false` / `android.newDsl=false` | RN 0.87.1 template AGP 9 compatibility (not a local hack). AGP 9 built-in Kotlin clashes with template `kotlin-android`. Opt-outs are version-specific; revisit on a later RN upgrade / AGP 10 | Required for 0.87.1 | First assemble failed on duplicate `kotlin` extension; succeeded after these two properties |
+| Do not upgrade AsyncStorage for this Android pass | First real blocker was Gradle 8.8 vs AGP 9.2.1, not Room | Required process | `assembleDebug` with existing `^2.0.0` |
 
 ## Dependency compatibility
 
@@ -97,14 +107,11 @@ Installed native UI (npm / pods):
 | react-native-svg | 15.8.0 | ^15.12.1 / **15.15.5** | SharedImageManager | iOS: that error gone |
 | react-native-gesture-handler | ^2.20.2 / 2.20.2 | ^3.2.1 / **3.2.1** | 2.x imports removed `RCTRootContentView.h` | iOS Debug compile succeeded |
 
-Unchanged unless a later build forces it: async-storage `^2.0.0`, navigation 7, actions-sheet `^0.9.7`, json-server.
+Unchanged unless a later build forces it: async-storage `^2.0.0` (Android Debug succeeded without upgrade), navigation 7, actions-sheet `^0.9.7`, json-server.
 
 ## Known issues
 
 - Jest: leftover test issues (RTK/immer ESM, mock hoisting, RN DevMenu, snapshots/`act`, `apiClient.test.ts` parse). Not import aliases.
-- Android still RN 0.75-era (`newArchEnabled=false`).
-- Location Info.plist / geo UI copy still present (product cleanup).
-- Android still RN 0.75-era (`newArchEnabled=false`).
 - Location Info.plist / geo UI copy still present (product cleanup).
 
 ## Validation
@@ -122,16 +129,51 @@ Unchanged unless a later build forces it: async-storage `^2.0.0`, navigation 7, 
 | tsc before ignoreDeprecations | `npx tsc --noEmit` | **TS5101** `baseUrl` deprecated; no source check; IDE **TS17004** |
 | tsc after relative imports | `npx tsc --noEmit` | exit 0 |
 | Option A | rewrite imports; strip paths + module-resolver | RN default-style tsconfig; Babel is only `@react-native/babel-preset` |
+| Android Debug | `cd android && ./gradlew assembleDebug` | **BUILD SUCCESSFUL** (~241 tasks, 158 executed, 83 up-to-date) |
 
 ### Import resolution (current)
 
 Relative `../` / `./` only. TypeScript, Metro, Jest, and ESLint use default node/bundler resolution. No `paths`, no Babel aliases, no Jest `moduleNameMapper`.
 
-Rebuild command (iOS already green):
+## Android (0.87.1)
+
+Migrated from a 0.75-era Android tree to the RN **0.87.1** toolchain. Source of truth: installed `node_modules/react-native/gradle/libs.versions.toml` and the 0.87.1 Android template. Not claimed future-proof beyond this RN version.
+
+### Problem / cause / change
+
+| Problem | Cause | Change |
+| --- | --- | --- |
+| Gradle 8.8 | AGP 9.2.1 needs Gradle ≥ 9.4.1 | Wrapper → `gradle-9.4.1-bin.zip` (`android/gradle/wrapper/gradle-wrapper.properties`) |
+| SDK/NDK/Kotlin still 0.75 | Catalog is minSdk 24, compileSdk 37, targetSdk 36, buildTools 37.0.0, NDK 27.1.12297006, Kotlin 2.2.0 | `android/build.gradle` `ext` |
+| `newArchEnabled=false` | Unsupported since RN 0.82; 0.87 requires New Arch | `android/gradle.properties` → `true` |
+| `proguard-android.txt` | AGP 9 dropped that default name | `android/app/build.gradle` → `proguard-android-optimize.txt` |
+| Duplicate `kotlin` extension | AGP 9 built-in Kotlin vs template `apply plugin: "org.jetbrains.kotlin.android"` | Template flags `android.builtInKotlin=false` and `android.newDsl=false` in `gradle.properties`. Keep the Kotlin plugin. |
+| 0.75 `MainApplication` | SoLoader + conditional `load()` is not the 0.87 host | `getDefaultReactHost` + `loadReactNative(this)`. Kept `com.taskmanager` and PackageList autolink. |
+
+`settings.gradle` was already autolink-compatible; not changed. `MainActivity.kt` not rewritten.
+
+### Validation
+
+```
+cd android && ./gradlew assembleDebug
+```
+
+**BUILD SUCCESSFUL.** AsyncStorage / Room / KSP were not added or upgraded.
+
+### Approach that worked
+
+1. Analyze Android vs installed RN 0.87.1 (no edits, no Gradle).
+2. Apply one toolchain group (wrapper, catalog, New Arch, ProGuard, `MainApplication`).
+3. One build checkpoint; fix only the first meaningful error (Kotlin plugin clash → the two template properties).
+4. One more `assembleDebug` → success.
+
+Avoided: treating AsyncStorage `StorageSupplier.kt` / `Unresolved reference 'room'` as the first blocker, then looping dependency/Gradle changes. That was reverted. Lesson: use the **first** configuration/compiler diagnostic; do not upgrade a library because its name appeared in an earlier or later error summary.
+
+Rebuild commands:
 
 ```
 xcodebuild -workspace ios/TaskManager.xcworkspace -scheme TaskManager -configuration Debug \
   -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build
-```
 
-Do not start Android until remaining JS/TS migration issues are understood.
+cd android && ./gradlew assembleDebug
+```
