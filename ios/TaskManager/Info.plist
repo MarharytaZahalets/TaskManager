@@ -33,10 +33,6 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Task Manager needs access to your location always and while you are using the app so you can see your locations on map</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Task Manager needs access to your location while you are using the app so you can see your locations on map</string>
 	<key>RCTNewArchEnabled</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
