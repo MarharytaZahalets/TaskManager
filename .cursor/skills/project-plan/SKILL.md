@@ -1,14 +1,14 @@
-Review and rewrite `.cursor/skills/project-plan.md` so it matches the current state of the TaskManager project.
+Review and rewrite `.cursor/skills/project-plan.md` so it matches the current state of this repository (RN-CLI-Playground), which contains the Task Manager application.
 
 IMPORTANT: analyze first and preserve valid product decisions. Do not implement application code or modify unrelated project files. Only update this skill file.
 
-The current skill is outdated because it describes TaskManager as a "Legacy React Native Architecture" project and explicitly says not to migrate to the React Native New Architecture.
+The current skill is outdated because it describes the Task Manager application in this repository as a "Legacy React Native Architecture" project and explicitly says not to migrate to the React Native New Architecture.
 
 That is no longer true.
 
 CURRENT PROJECT STATE:
 
-TaskManager is an existing / legacy React Native application being modernized.
+This repository is RN-CLI-Playground. It contains Task Manager, an existing / legacy React Native application being modernized.
 
 Current migration target:
 - React Native 0.87.1
@@ -25,7 +25,7 @@ Migration status:
 - Android migration is currently in progress
 - Android is being aligned from the old RN 0.75-era native configuration to RN 0.87.1
 
-Do NOT describe TaskManager as a React Native "Legacy Architecture" project.
+Do NOT describe Task Manager as a React Native "Legacy Architecture" project.
 
 It is acceptable to describe it as:
 - an existing application
@@ -41,8 +41,8 @@ TaskTracker remains a separate repository and separate implementation:
 - eventually the same Supabase backend/database
 
 Do not merge the projects.
-Do not migrate TaskManager to Expo.
-Do not copy TaskTracker architecture into TaskManager.
+Do not migrate the Task Manager application in this repository to Expo.
+Do not copy TaskTracker architecture into RN-CLI-Playground.
 
 --------------------------------------------------
 REQUIRED CHANGES
@@ -76,17 +76,17 @@ Do not:
 - mix Android platform migration with product architecture refactoring
 
 2. Update all references that incorrectly say:
-- TaskManager remains Legacy Architecture
+- Task Manager remains Legacy Architecture
 - do not migrate to React Native New Architecture
 - migrate to Expo/New Architecture is forbidden
 
-TaskManager must now be described as:
+The Task Manager application in this repository must now be described as:
 - React Native CLI
 - React Native 0.87.1
 - React Native New Architecture
 - existing codebase being modernized
 
-3. Preserve the separation between TaskManager and TaskTracker.
+3. Preserve the separation between this repository (RN-CLI-Playground / Task Manager) and TaskTracker.
 
 4. Review the architecture terminology.
 
@@ -125,7 +125,7 @@ These decisions remain valid:
 - Tasks should support large collections
 - pagination/infinite queries where appropriate
 - optimistic updates with rollback
-- shared Supabase database between TaskManager and TaskTracker
+- shared Supabase database between Task Manager (this repository) and TaskTracker
 
 6. Make the execution rules more practical.
 

@@ -11,9 +11,9 @@ The new version includes:
 
 ---
 
-This is a Task Manager project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+This is the **RN-CLI-Playground** repository. It contains the Task Manager application, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
-# Welcome to Task Manager App repository 🚀
+# Welcome to RN-CLI-Playground 🚀
 
 ![gif](./docs/app.gif)
 
@@ -61,7 +61,7 @@ cd ios && pod install && cd ..
 
 Second, start **Metro**, the JavaScript bundler that ships with React Native.
 
-To start Metro, run one of the following commands from the root of the Task Manager project:
+To start Metro, run one of the following commands from the root of the RN-CLI-Playground repository:
 
 - Without debugger:
 ```bash
