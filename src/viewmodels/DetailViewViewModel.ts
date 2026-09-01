@@ -2,13 +2,13 @@ import { useCallback, useState } from 'react';
 
 import { SheetManager } from 'react-native-actions-sheet';
 
-import { TASK_STATUS_FIELDS } from 'core/constants/ui';
-import { generateId, hasChanges } from 'core/utils/utils';
-import { useTaskViewModel } from 'viewmodels/TaskListViewModel';
+import { TASK_STATUS_FIELDS } from '../core/constants/ui';
+import { generateId, hasChanges } from '../core/utils/utils';
+import { useTaskViewModel } from './TaskListViewModel';
 
 import type { NavigationProp, RouteProp } from '@react-navigation/native';
-import type { Task, TaskStatus } from 'models/TaskList';
-import type { RootStackParamList } from 'navigation/types';
+import type { Task, TaskStatus } from '../models/TaskList';
+import type { RootStackParamList } from '../navigation/types';
 
 export const useDetailViewModel = (
   route: RouteProp<RootStackParamList, 'DetailView'>,

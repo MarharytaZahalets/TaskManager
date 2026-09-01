@@ -1,13 +1,13 @@
 import React from 'react';
 import { FlatList, type ListRenderItem } from 'react-native';
 
-import { ActionTools, AppSaveAreaView, EmptyComponent, TaskCard } from 'components';
-import { Path } from 'navigation/constants';
-import styles from 'screens/TaskListScreen/styles';
-import { useTaskViewModel } from 'viewmodels/TaskListViewModel';
+import { ActionTools, AppSaveAreaView, EmptyComponent, TaskCard } from '../../components';
+import { Path } from '../../navigation/constants';
+import styles from './styles';
+import { useTaskViewModel } from '../../viewmodels/TaskListViewModel';
 
-import type { Task } from 'models/TaskList';
-import type { TaskListScreenProps } from 'navigation/types';
+import type { Task } from '../../models/TaskList';
+import type { TaskListScreenProps } from '../../navigation/types';
 
 const TaskListScreen: React.FC<TaskListScreenProps> = ({ navigation }) => {
   const { taskList, sortActionList, searchTaskList } = useTaskViewModel();

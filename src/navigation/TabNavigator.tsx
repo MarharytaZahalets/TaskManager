@@ -2,15 +2,15 @@ import React from 'react';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import { Path } from 'navigation/constants';
+import { Path } from './constants';
 import {
   geolocationScreenOptions,
   tabNavigatorOptions,
   taskListScreenOptions,
-} from 'navigation/screenOptions';
-import { GeolocationScreen, SettingsScreen, TaskListScreen } from 'screens';
+} from './screenOptions';
+import { GeolocationScreen, SettingsScreen, TaskListScreen } from '../screens';
 
-import type { TabParamList } from 'navigation/types';
+import type { TabParamList } from './types';
 
 const Tab = createBottomTabNavigator<TabParamList>();
 

@@ -2,16 +2,16 @@ import React from 'react';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { Path } from 'navigation/constants';
+import { Path } from './constants';
 import {
   detailViewScreenOptions,
   homeScreenOptions,
   tabsScreenOptions,
-} from 'navigation/screenOptions';
-import TabNavigator from 'navigation/TabNavigator';
-import { DetailViewScreen, HomeScreen } from 'screens';
+} from './screenOptions';
+import TabNavigator from './TabNavigator';
+import { DetailViewScreen, HomeScreen } from '../screens';
 
-import type { RootStackParamList } from 'navigation/types';
+import type { RootStackParamList } from './types';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 

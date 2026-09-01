@@ -3,17 +3,17 @@ import { useCallback, useEffect, useState } from 'react';
 import { SheetManager } from 'react-native-actions-sheet';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
-import api from 'api/taskListService';
-import { TASK_FIELDS } from 'core/constants/ui';
-import { dateString, errorHandler } from 'core/utils/utils';
-import { Task, type TaskField } from 'models/TaskList';
-import { RootState } from 'state/store';
+import api from '../api/taskListService';
+import { TASK_FIELDS } from '../core/constants/ui';
+import { dateString, errorHandler } from '../core/utils/utils';
+import { Task, type TaskField } from '../models/TaskList';
+import { RootState } from '../state/store';
 import {
   addTaskAction,
   deleteTaskAction,
   setTaskListAction,
   updateTaskAction,
-} from 'state/taskListSlice';
+} from '../state/taskListSlice';
 
 export const useTaskViewModel = () => {
   const taskList: Task[] = useSelector(
@@ -33,7 +33,6 @@ export const useTaskViewModel = () => {
     setLoading(true);
     try {
       const data = await api.getTasks();
-      __DEV__ && console.log('fetchTaskList: ', data);
       dispatch(setTaskListAction(data));
     } catch (err: unknown) {
       setError(errorHandler(err));

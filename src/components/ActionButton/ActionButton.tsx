@@ -1,7 +1,7 @@
 import React from 'react';
 import { Pressable, View } from 'react-native';
 
-import styles from 'components/ActionButton/styles';
+import styles from './styles';
 
 interface ActionButtonProps {
   children: React.ReactNode;

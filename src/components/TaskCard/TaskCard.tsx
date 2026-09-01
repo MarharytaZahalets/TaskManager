@@ -1,12 +1,12 @@
 import React from 'react';
 import { Pressable, View } from 'react-native';
 
-import { BaseText } from 'components';
-import styles from 'components/TaskCard/styles';
-import { APP_STATIC_ICONS, STATUS_ICONS } from 'core/constants/icons';
-import { dateString } from 'core/utils/utils';
+import { BaseText } from '..';
+import styles from './styles';
+import { APP_STATIC_ICONS, STATUS_ICONS } from '../../core/constants/icons';
+import { dateString } from '../../core/utils/utils';
 
-import type { Task } from 'models/TaskList';
+import type { Task } from '../../models/TaskList';
 
 interface TaskCardProps {
   task: Task;
@@ -21,12 +21,12 @@ const TaskCard: React.FC<TaskCardProps> = React.memo(({ task, onPress }) => {
       <Pressable onPress={onPress}>
         <View style={styles.row}>
           {STATUS_ICONS[task.status]}
-          <BaseText isBold numberOfLines={1} lineBreakMode={'tail'} style={styles.title}>
+          <BaseText isBold numberOfLines={1} ellipsizeMode={'tail'} style={styles.title}>
             {task.title}
           </BaseText>
         </View>
 
-        <BaseText style={styles.description} lineBreakMode={'tail'} numberOfLines={3}>
+        <BaseText style={styles.description} ellipsizeMode={'tail'} numberOfLines={3}>
           {task.description}
         </BaseText>
 

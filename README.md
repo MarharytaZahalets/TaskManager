@@ -78,7 +78,7 @@ npx react-native start --experimental-debugger
 
 Let _Metro Bundler_ run in its own terminal. Open a new terminal from the _root_ of your React Native project and run the following command to start json-server:
 ```bash
-json-server --watch db.json --port 3000
+npx json-server db.json
 ```
 You can change the port if needed. To ensure everything works as expected, you should see the following in your terminal:
 ```bash

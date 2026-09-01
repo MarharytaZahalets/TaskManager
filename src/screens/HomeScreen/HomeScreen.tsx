@@ -1,12 +1,12 @@
 import React from 'react';
 
 import styles from './styles';
-import { AppSaveAreaView, BaseText, ActionButton } from 'components';
-import { APP_STATIC_ICONS } from 'core/constants/icons';
-import { Path } from 'navigation/constants';
-import { useTaskViewModel } from 'viewmodels/TaskListViewModel';
+import { AppSaveAreaView, BaseText, ActionButton } from '../../components';
+import { APP_STATIC_ICONS } from '../../core/constants/icons';
+import { Path } from '../../navigation/constants';
+import { useTaskViewModel } from '../../viewmodels/TaskListViewModel';
 
-import type { HomeScreenProps } from 'navigation/types';
+import type { HomeScreenProps } from '../../navigation/types';
 
 const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   const { taskList } = useTaskViewModel();
