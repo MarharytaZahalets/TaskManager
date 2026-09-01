@@ -2,7 +2,7 @@ import React from 'react';
 
 import Svg, { Path } from 'react-native-svg';
 
-import { Colors } from 'core/theme/colors';
+import { Colors } from '../../../core/theme/colors';
 
 type Props = {
   size?: number;

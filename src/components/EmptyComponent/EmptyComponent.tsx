@@ -1,8 +1,8 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import { BaseText } from 'components';
-import styles from 'components/EmptyComponent/styles';
+import { BaseText } from '..';
+import styles from './styles';
 
 interface EmptyComponentProps {
   title: string;

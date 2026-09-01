@@ -8,7 +8,7 @@ import { Provider } from 'react-redux';
 
 import App from './App';
 import { name as appName } from './app.json';
-import { store } from 'state/store';
+import { store } from './src/state/store';
 
 const app = () => {
   // const dispatch = useDispatch();

@@ -2,11 +2,11 @@ import React from 'react';
 import { View } from 'react-native';
 
 import styles from './styles';
-import { AppSaveAreaView } from 'components';
-import SettingActionButton from 'components/SettingActionButton/SettingActionButton';
-import { openAppSettings } from 'core/utils/utils';
+import { AppSaveAreaView } from '../../components';
+import SettingActionButton from '../../components/SettingActionButton/SettingActionButton';
+import { openAppSettings } from '../../core/utils/utils';
 
-import type { SettingsProps } from 'navigation/types';
+import type { SettingsProps } from '../../navigation/types';
 
 const SettingsScreen: React.FC<SettingsProps> = ({ navigation }) => {
   const goToHomeScreen = () => {

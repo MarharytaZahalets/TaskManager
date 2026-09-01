@@ -1,8 +1,8 @@
-export { default as ActionButton } from 'components/ActionButton/ActionButton';
-export { default as ActionTools } from 'components/ActionTools/ActionTools';
-export { default as AppActionSheet } from 'components/AppActionSheet/AppActionSheet';
-export { default as AppSaveAreaView } from 'components/AppSaveAreaView/AppSaveAreaView';
-export { default as BaseText } from 'components/BaseText/BaseText';
-export { default as InputField } from 'components/InputField/InputField';
-export { default as EmptyComponent } from 'components/EmptyComponent/EmptyComponent';
-export { default as TaskCard } from 'components/TaskCard/TaskCard';
+export { default as ActionButton } from './ActionButton/ActionButton';
+export { default as ActionTools } from './ActionTools/ActionTools';
+export { default as AppActionSheet } from './AppActionSheet/AppActionSheet';
+export { default as AppSaveAreaView } from './AppSaveAreaView/AppSaveAreaView';
+export { default as BaseText } from './BaseText/BaseText';
+export { default as InputField } from './InputField/InputField';
+export { default as EmptyComponent } from './EmptyComponent/EmptyComponent';
+export { default as TaskCard } from './TaskCard/TaskCard';

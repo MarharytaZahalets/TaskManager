@@ -3,8 +3,8 @@ import { View } from 'react-native';
 
 import ActionSheet, { type SheetProps } from 'react-native-actions-sheet';
 
-import { ActionButton, BaseText } from 'components';
-import styles from 'components/AppActionSheet/styles';
+import { ActionButton, BaseText } from '..';
+import styles from './styles';
 
 export interface renderItemProps {
   id: string;

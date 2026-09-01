@@ -1,6 +1,6 @@
-import { isAndroid } from 'core/utils/utils';
+import { isAndroid } from '../core/utils/utils';
 
-import type { Task } from 'models/TaskList';
+import type { Task } from '../models/TaskList';
 
 const BASE_URL = isAndroid() ? 'http://10.0.2.2:3000' : 'http://localhost:3000';
 

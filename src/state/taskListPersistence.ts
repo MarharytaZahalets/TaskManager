@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { RootState } from 'state/store';
+import { RootState } from './store';
 
 // thunk to load taskList from AsyncStorage
 export const loadTaskList = createAsyncThunk('taskList/loadTaskList', async () => {

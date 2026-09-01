@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { GeolocationIcon, SettingsIcon, TaskListIcon } from 'assets/icons/svg';
-import { TAB_ICON_SIZE } from 'core/constants/icons';
-import { Colors } from 'core/theme/colors';
-import { Path } from 'navigation/constants';
-import styles from 'navigation/styles';
+import { GeolocationIcon, SettingsIcon, TaskListIcon } from '../assets/icons/svg';
+import { TAB_ICON_SIZE } from '../core/constants/icons';
+import { Colors } from '../core/theme/colors';
+import { Path } from './constants';
+import styles from './styles';
 
 import type {
   BottomTabNavigationOptions,
@@ -14,7 +14,7 @@ import type {
   NativeStackNavigationOptions,
   NativeStackOptionsArgs,
 } from '@react-navigation/native-stack';
-import type { RootStackParamList, TabBarIconProps, TabParamList } from 'navigation/types';
+import type { RootStackParamList, TabBarIconProps, TabParamList } from './types';
 
 // *** Options for Root Navigator Screens ***
 export const homeScreenOptions: NativeStackNavigationOptions = { headerShown: false };

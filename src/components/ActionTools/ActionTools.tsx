@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { TextInput, View } from 'react-native';
 
-import { ActionButton } from 'components';
-import styles from 'components/ActionTools/styles';
-import { APP_STATIC_ICONS } from 'core/constants/icons';
+import { ActionButton } from '..';
+import styles from './styles';
+import { APP_STATIC_ICONS } from '../../core/constants/icons';
 
 interface ActionToolsProps {
   onAddTask: () => void;
