@@ -1,102 +1,144 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { SheetManager } from 'react-native-actions-sheet';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 import api from '../api/taskListService';
-import { TASK_FIELDS } from '../core/constants/ui';
+import { SORT_BY_FIELDS, SORT_ORDER_FIELDS } from '../core/constants/ui';
+import { sortTaskListBy } from '../core/utils/sortTaskList';
 import { dateString, errorHandler } from '../core/utils/utils';
-import { Task, type TaskField } from '../models/TaskList';
+import { Task, type SortOption, type SortOrder } from '../models/TaskList';
 import { RootState } from '../state/store';
 import {
-  addTaskAction,
-  deleteTaskAction,
+  requestStartAction,
+  setErrorAction,
+  setLoadingAction,
   setTaskListAction,
-  updateTaskAction,
 } from '../state/taskListSlice';
 
-export const useTaskViewModel = () => {
-  const taskList: Task[] = useSelector(
-    (state: RootState) => state.taskList.taskList,
+type UseTaskViewModelOptions = {
+  fetchOnMount?: boolean;
+};
+
+export const useTaskViewModel = ({ fetchOnMount = true }: UseTaskViewModelOptions = {}) => {
+  const { taskList, loading, error } = useSelector(
+    (state: RootState) => state.taskList,
     shallowEqual,
   );
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    fetchTaskList();
-  }, []);
+  const [sortBy, setSortBy] = useState<SortOption>('default');
+  const [sortOrder, setSortOrder] = useState<SortOrder | null>(null);
+  const sortByRef = useRef<SortOption>(sortBy);
+  const sortOrderRef = useRef<SortOrder | null>(sortOrder);
+  const defaultTaskListRef = useRef<Task[]>([...taskList]);
+  sortByRef.current = sortBy;
+  sortOrderRef.current = sortOrder;
 
-  const fetchTaskList = useCallback(async () => {
-    setLoading(true);
-    try {
-      const data = await api.getTasks();
-      dispatch(setTaskListAction(data));
-    } catch (err: unknown) {
-      setError(errorHandler(err));
-    } finally {
-      setLoading(false);
+  const publishList = useCallback(() => {
+    const field = sortByRef.current;
+    const order = sortOrderRef.current;
+    if (field === 'default' || order == null) {
+      dispatch(setTaskListAction([...defaultTaskListRef.current]));
+      return;
     }
+
+    dispatch(setTaskListAction(sortTaskListBy(defaultTaskListRef.current, field, order)));
   }, [dispatch]);
 
-  const addTask = useCallback(
-    async (task: Task) => {
-      setLoading(true);
+  const runRequest = useCallback(
+    async <T>(request: () => Promise<T>, onSuccess: (result: T) => void): Promise<boolean> => {
+      dispatch(requestStartAction());
       try {
-        const newTask = await api.createTask(task);
-        dispatch(addTaskAction(newTask));
+        const result = await request();
+        onSuccess(result);
+        return true;
       } catch (err: unknown) {
-        setError(errorHandler(err));
+        dispatch(setErrorAction(errorHandler(err)));
+        return false;
       } finally {
-        setLoading(false);
+        dispatch(setLoadingAction(false));
       }
     },
     [dispatch],
+  );
+
+  const fetchTaskList = useCallback(async () => {
+    return runRequest(
+      () => api.getTasks(),
+      (data) => {
+        defaultTaskListRef.current = data;
+        publishList();
+      },
+    );
+  }, [publishList, runRequest]);
+
+  useEffect(() => {
+    if (fetchOnMount) {
+      fetchTaskList();
+    }
+  }, [fetchOnMount, fetchTaskList]);
+
+  const addTask = useCallback(
+    async (task: Task) => {
+      return runRequest(
+        () => api.createTask(task),
+        (newTask) => {
+          defaultTaskListRef.current = [...defaultTaskListRef.current, newTask];
+          publishList();
+        },
+      );
+    },
+    [publishList, runRequest],
   );
 
   const updateTask = useCallback(
     async (id: string, task: Task) => {
-      setLoading(true);
-      try {
-        const updatedTask = await api.updateTask(id, task);
-        dispatch(updateTaskAction(updatedTask));
-      } catch (err: unknown) {
-        setError(errorHandler(err));
-      } finally {
-        setLoading(false);
-      }
+      return runRequest(
+        () => api.updateTask(id, task),
+        (updatedTask) => {
+          defaultTaskListRef.current = defaultTaskListRef.current.map((item) =>
+            item.id === updatedTask.id ? updatedTask : item,
+          );
+          publishList();
+        },
+      );
     },
-    [dispatch],
+    [publishList, runRequest],
   );
 
   const deleteTask = useCallback(
     async (id: string) => {
-      setLoading(true);
-      try {
-        await api.deleteTask(id);
-        dispatch(deleteTaskAction(id));
-      } catch (err: unknown) {
-        setError(errorHandler(err));
-      } finally {
-        setLoading(false);
-      }
+      return runRequest(
+        () => api.deleteTask(id),
+        () => {
+          defaultTaskListRef.current = defaultTaskListRef.current.filter((item) => item.id !== id);
+          publishList();
+        },
+      );
     },
-    [dispatch],
+    [publishList, runRequest],
   );
 
   const sortTaskList = useCallback(
-    async (field: TaskField) => {
-      setLoading(true);
-      try {
-        const data = await api.sortTasks(field, 'asc');
-        dispatch(setTaskListAction(data));
-      } catch (err: unknown) {
-        setError(errorHandler(err));
-      } finally {
-        setLoading(false);
+    (field: SortOption, order: SortOrder | null = null) => {
+      if (field === 'default') {
+        sortByRef.current = 'default';
+        sortOrderRef.current = null;
+        setSortBy('default');
+        setSortOrder(null);
+        dispatch(setTaskListAction([...defaultTaskListRef.current]));
+        return;
       }
+
+      sortByRef.current = field;
+      setSortBy(field);
+
+      const nextOrder = order ?? 'asc';
+      sortOrderRef.current = nextOrder;
+      setSortOrder(nextOrder);
+      dispatch(setTaskListAction(sortTaskListBy(defaultTaskListRef.current, field, nextOrder)));
     },
     [dispatch],
   );
@@ -119,26 +161,37 @@ export const useTaskViewModel = () => {
       });
       dispatch(setTaskListAction(updatedList));
     },
-    [dispatch, taskList],
+    [dispatch, fetchTaskList, taskList],
   );
 
-  const sortAndClose = useCallback((field: TaskField) => {
-    sortTaskList(field);
-    SheetManager.hide('app-action-sheet');
-  }, []);
-
   const sortActionList = () => {
+    const isDefaultSort = sortByRef.current === 'default';
+    const sortOptions = Object.keys(SORT_BY_FIELDS) as SortOption[];
+
     SheetManager.show('app-action-sheet', {
       payload: {
-        title: 'Choose sort field',
-        items: [
-          { id: '1', field: TASK_FIELDS.title, onPress: () => sortAndClose('title') },
+        title: 'Sort tasks',
+        sections: [
           {
-            id: '2',
-            field: TASK_FIELDS.description,
-            onPress: () => sortAndClose('description'),
+            title: 'Sort by',
+            items: sortOptions.map((field) => ({
+              id: `field-${field}`,
+              field: SORT_BY_FIELDS[field],
+              selected: sortByRef.current === field,
+              onPress: () =>
+                sortTaskList(field, field === 'default' ? null : sortOrderRef.current),
+            })),
           },
-          { id: '3', field: TASK_FIELDS.status, onPress: () => sortAndClose('status') },
+          {
+            title: 'Order',
+            items: (Object.keys(SORT_ORDER_FIELDS) as SortOrder[]).map((order) => ({
+              id: `order-${order}`,
+              field: SORT_ORDER_FIELDS[order],
+              selected: !isDefaultSort && sortOrderRef.current === order,
+              disabled: isDefaultSort,
+              onPress: () => sortTaskList(sortByRef.current, order),
+            })),
+          },
         ],
       },
     });
@@ -154,5 +207,8 @@ export const useTaskViewModel = () => {
     deleteTask,
     searchTaskList,
     sortActionList,
+    sortTaskList,
+    sortBy,
+    sortOrder,
   };
 };

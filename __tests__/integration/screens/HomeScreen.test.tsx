@@ -7,6 +7,9 @@ import { Path } from '../../../src/navigation/constants';
 jest.mock('../../../src/viewmodels/TaskListViewModel', () => ({
   useTaskViewModel: () => ({
     taskList: [],
+    loading: false,
+    error: null,
+    fetchTaskList: jest.fn(),
   }),
 }));
 
@@ -31,6 +34,7 @@ jest.mock('../../../src/components', () => {
         <Text>{children}</Text>
       </TouchableOpacity>
     ),
+    ErrorState: ({ message }: { message: string }) => <Text>{message}</Text>,
   };
 });
 
@@ -41,15 +45,21 @@ describe('HomeScreen integration', () => {
 
   it('renders without crashing and matches snapshot', () => {
     const navigation = createNavigation();
-    const tree = renderer.create(<HomeScreen navigation={navigation as any} />).toJSON();
+    let tree: renderer.ReactTestRendererJSON | renderer.ReactTestRendererJSON[] | null = null;
+    renderer.act(() => {
+      tree = renderer.create(<HomeScreen navigation={navigation as never} />).toJSON();
+    });
     expect(tree).toMatchSnapshot();
   });
 
   it('navigates to Tabs -> TaskList when button is pressed', () => {
     const navigation = createNavigation();
-    const component = renderer.create(<HomeScreen navigation={navigation as any} />);
+    let component: renderer.ReactTestRenderer;
+    renderer.act(() => {
+      component = renderer.create(<HomeScreen navigation={navigation as never} />);
+    });
 
-    const root = component.root;
+    const root = component!.root;
     const touchables = root.findAll(
       (node) => node.props.onPress && node.type.displayName !== 'Text',
     );

@@ -2,6 +2,7 @@ import { registerSheet, type SheetDefinition } from 'react-native-actions-sheet'
 
 import AppActionSheet, {
   type renderItemProps,
+  type SheetSection,
 } from './src/components/AppActionSheet/AppActionSheet';
 
 registerSheet('app-action-sheet', AppActionSheet);
@@ -13,7 +14,8 @@ declare module 'react-native-actions-sheet' {
     'app-action-sheet': SheetDefinition<{
       payload: {
         title: string;
-        items: renderItemProps[];
+        items?: renderItemProps[];
+        sections?: SheetSection[];
       };
     }>;
   }
