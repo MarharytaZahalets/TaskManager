@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { TextInput, View } from 'react-native';
 
 import { ActionButton } from '..';
@@ -14,10 +14,12 @@ interface ActionToolsProps {
 const ActionTools: React.FC<ActionToolsProps> = React.memo(
   ({ onAddTask, onSearchBy, onSortTaskList }) => {
     const [query, setQuery] = useState<string>('');
+    const onSearchByRef = useRef(onSearchBy);
+    onSearchByRef.current = onSearchBy;
 
     useEffect(() => {
       if (query === '') {
-        onSearchBy('');
+        onSearchByRef.current('');
       }
     }, [query]);
 

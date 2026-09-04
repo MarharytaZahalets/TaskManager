@@ -66,8 +66,26 @@ describe('taskListService', () => {
 
     const result = await service.sortTasks('title', 'asc');
 
-    expect(mockedApiClient.get).toHaveBeenCalledWith('/taskList?_sort=title&_order=asc');
+    expect(mockedApiClient.get).toHaveBeenCalledWith('/taskList?_sort=title');
     expect(result).toEqual(tasks);
+  });
+
+  it('sortTasks prefixes the field with - for descending order', async () => {
+    mockedApiClient.get.mockResolvedValueOnce([]);
+
+    await service.sortTasks('status', 'desc');
+
+    expect(mockedApiClient.get).toHaveBeenCalledWith('/taskList?_sort=-status');
+  });
+
+  it('sortTasks uses createdAt for date sorting', async () => {
+    mockedApiClient.get.mockResolvedValueOnce([]);
+
+    await service.sortTasks('createdAt', 'asc');
+    expect(mockedApiClient.get).toHaveBeenCalledWith('/taskList?_sort=createdAt');
+
+    await service.sortTasks('createdAt', 'desc');
+    expect(mockedApiClient.get).toHaveBeenCalledWith('/taskList?_sort=-createdAt');
   });
 });
 

@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 import { SheetManager } from 'react-native-actions-sheet';
 
@@ -29,7 +29,12 @@ export const useDetailViewModel = (
     id,
   });
 
-  const { addTask, deleteTask, updateTask } = useTaskViewModel();
+  const lastAction = useRef<'save' | 'delete' | null>(null);
+  const [didAttemptMutation, setDidAttemptMutation] = useState(false);
+
+  const { addTask, deleteTask, updateTask, loading, error } = useTaskViewModel({
+    fetchOnMount: false,
+  });
 
   const setStatusAndClose = useCallback((task: Task) => {
     setUpdatedTask(task);
@@ -74,9 +79,17 @@ export const useDetailViewModel = (
     setUpdatedTask({ ...updatedTask, description: descriptionString });
   };
 
-  const onSave = () => {
+  const onSave = async () => {
+    if (loading) {
+      return;
+    }
+
+    lastAction.current = 'save';
+    setDidAttemptMutation(true);
+    let success = true;
+
     if (!id) {
-      addTask({
+      success = await addTask({
         ...updatedTask,
         id: generateId(),
         createdAt: new Date(),
@@ -84,26 +97,48 @@ export const useDetailViewModel = (
     } else if (
       hasChanges(route.params, updatedTask, ['title', 'description', 'status'])
     ) {
-      updateTask(id, {
+      success = await updateTask(id, {
         ...updatedTask,
       });
     }
 
-    navigation.goBack();
+    if (success) {
+      navigation.goBack();
+    }
   };
 
-  const onDelete = () => {
-    deleteTask(id);
+  const onDelete = async () => {
+    if (loading) {
+      return;
+    }
 
-    navigation.goBack();
+    lastAction.current = 'delete';
+    setDidAttemptMutation(true);
+    const success = await deleteTask(id);
+
+    if (success) {
+      navigation.goBack();
+    }
+  };
+
+  const onRetry = () => {
+    if (lastAction.current === 'delete') {
+      onDelete();
+      return;
+    }
+
+    onSave();
   };
 
   return {
     updatedTask,
+    loading,
+    error: didAttemptMutation ? error : null,
     setTitle,
     setDescription,
     openChangeStatus,
     onSave,
     onDelete,
+    onRetry,
   };
 };

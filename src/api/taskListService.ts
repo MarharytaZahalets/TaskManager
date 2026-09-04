@@ -15,7 +15,10 @@ export const deleteTask = async (id: string): Promise<Task> =>
 export const sortTasks = async (
   field: keyof Task,
   order: 'asc' | 'desc',
-): Promise<Task[]> => await apiClient.get(`/taskList?_sort=${field}&_order=${order}`);
+): Promise<Task[]> => {
+  const sortParam = order === 'desc' ? `-${field}` : field;
+  return await apiClient.get(`/taskList?_sort=${sortParam}`);
+};
 
 export default {
   getTasks,
