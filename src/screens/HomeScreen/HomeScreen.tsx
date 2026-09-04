@@ -9,8 +9,10 @@ import { useTaskViewModel } from '../../viewmodels/TaskListViewModel';
 import type { HomeScreenProps } from '../../navigation/types';
 
 const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
-  const { taskList } = useTaskViewModel();
+  const { taskList, loading, error } = useTaskViewModel();
   const taskListLength = taskList.length;
+  const showEmptyCopy = !loading && !error && taskListLength === 0;
+  const showCountCopy = taskListLength > 0;
 
   const goToTabs = () => {
     navigation.navigate(Path.Tabs, {
@@ -27,12 +29,12 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
       <BaseText style={styles.welcomeText}>
         Here, you can easily manage your tasks
       </BaseText>
-      {taskListLength === 0 && (
+      {showEmptyCopy && (
         <BaseText style={styles.welcomeText}>
           I see you still don't have a task, so let's get started🚀
         </BaseText>
       )}
-      {taskListLength > 0 && (
+      {showCountCopy && (
         <BaseText style={styles.welcomeText}>
           As I see, you already have {taskList.length} tasks, so good luck getting them
           done🚀

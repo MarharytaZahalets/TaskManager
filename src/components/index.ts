@@ -5,4 +5,5 @@ export { default as AppSaveAreaView } from './AppSaveAreaView/AppSaveAreaView';
 export { default as BaseText } from './BaseText/BaseText';
 export { default as InputField } from './InputField/InputField';
 export { default as EmptyComponent } from './EmptyComponent/EmptyComponent';
+export { default as ErrorState } from './ErrorState/ErrorState';
 export { default as TaskCard } from './TaskCard/TaskCard';
